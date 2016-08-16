@@ -33,7 +33,7 @@ this file and include it in basic-server.js so that it actually works.
 var messages = [];
 
 var requestHandler = function(request, response) {
-  console.log('Serving request type ' + request.method + ' for url ' + request.url);
+   // console.log('Serving request type ' + request.method + ' for url ' + request.url);
   // Request and Response come from node's http module.
   //
   // They include information about both the incoming request, such as
@@ -58,8 +58,7 @@ var requestHandler = function(request, response) {
     headers['Content-Type'] = 'application/json';
   };
 
-  //curl -H "Content-Type: application/json" -X POST -d '{"username":"xyz","message":"xyz","roomname":"room"}' http://localhost:3000/classes/messages
-
+//curl -H "Content-Type: application/json" -X POST -d '{"username":"xyz","message":"xyz","roomname":"room"}' http://localhost:3000/classes/messages
   if (request.url === '/classes/messages') {
     if (request.method === 'GET') {
       statusCode = 200;
@@ -72,9 +71,12 @@ var requestHandler = function(request, response) {
       request.on('data', function (data) {
         body.push(data);
 
-      }).on('end', function () {
-        body = Buffer.concat(body).toString();
-        messages.push(JSON.parse(body));
+      });
+      request.on('end', function () {
+ 
+        // body = body.toString();
+        body = JSON.parse(body);
+        messages.push(body);
         respondWithMessages();
       });
     }
@@ -103,7 +105,7 @@ var requestHandler = function(request, response) {
   // Calling .end "flushes" the response's internal buffer, forcing
   // node to actually send all the data over to the client.
   r = JSON.stringify(r);
-  console.log(r);
+  // console.log(r);
   response.end(r);
 };
 

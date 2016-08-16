@@ -1,4 +1,6 @@
 // Methods for stubbing HTTP requests and responses
+
+
 module.exports = {
 
   response: function() {
